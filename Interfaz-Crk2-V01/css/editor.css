@@ -1,0 +1,1400 @@
+/* ============================================
+   EDITOR CSS - DARK/LIGHT MODE MINIMALIST
+   Diseño vertical minimalista con estética Apple
+============================================ */
+
+/* ============================================
+   VARIABLES DE TEMA
+============================================ */
+:root {
+    /* Light Mode (default) */
+    --bg-primary: #f5f5f7;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f8f8f9;
+    --bg-glass: rgba(255, 255, 255, 0.95);
+    --bg-glass-alt: rgba(255, 255, 255, 0.8);
+    
+    --text-primary: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --text-tertiary: #86868b;
+    
+    --border-light: rgba(0, 0, 0, 0.08);
+    --border-medium: rgba(0, 0, 0, 0.12);
+    
+    --btn-bg: #f5f5f7;
+    --btn-bg-hover: #e8e8ed;
+    
+    --shadow-sm: rgba(0, 0, 0, 0.04);
+    --shadow-md: rgba(0, 0, 0, 0.08);
+    --shadow-lg: rgba(0, 0, 0, 0.15);
+    
+    --grid-pattern: rgba(0, 0, 0, 0.025);
+    --accent-color: #6366f1;
+    --accent-hover: #4f46e5;
+    
+    /* Variable para sincronizar altura del toolbar - DESKTOP DEFAULT */
+    /* toolbar-secondary: 12px + 44px + 8px + 0.5px border = 64.5px */
+    /* toolbar-primary: 12px + 60px + 12px = 84px */
+    /* Total: 64.5px + 84px = 148.5px → redondeamos a 149px */
+    --toolbar-height: 149px;
+}
+
+:root.dark-mode {
+    /* Dark Mode */
+    --bg-primary: #1c1c1e;
+    --bg-secondary: #2c2c2e;
+    --bg-tertiary: #1c1c1e;
+    --bg-glass: rgba(44, 44, 46, 0.95);
+    --bg-glass-alt: rgba(44, 44, 46, 0.8);
+    
+    --text-primary: #f5f5f7;
+    --text-secondary: #98989d;
+    --text-tertiary: #636366;
+    
+    --border-light: rgba(255, 255, 255, 0.12);
+    --border-medium: rgba(255, 255, 255, 0.18);
+    
+    --btn-bg: #3a3a3c;
+    --btn-bg-hover: #48484a;
+    
+    --shadow-sm: rgba(0, 0, 0, 0.3);
+    --shadow-md: rgba(0, 0, 0, 0.4);
+    --shadow-lg: rgba(0, 0, 0, 0.6);
+    
+    --grid-pattern: rgba(255, 255, 255, 0.03);
+    --accent-color: #6366f1;
+    --accent-hover: #7c3aed;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.editor-body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg-primary);
+    position: relative;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+    transition: background 0.3s ease;
+}
+
+/* Contenedor del Editor */
+.editor-container {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+/* Patrón de cuadrícula para canvas vacío */
+.canvas-area::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(var(--grid-pattern) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-pattern) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 1;
+    z-index: -1;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.canvas-area.has-background::before {
+    opacity: 0;
+}
+/* Área del Canvas - Con background del flyer */
+.canvas-area {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: var(--toolbar-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Background del Flyer - MÁXIMA CALIDAD CON IMG TAG */
+.flyer-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: var(--toolbar-height);
+    height: 100vh;
+    opacity: 1;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+/* IMG dentro del background - AQUÍ ESTÁ LA CLAVE */
+.flyer-background img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+    
+    /* MÁXIMA CALIDAD DE RENDERIZADO */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: high-quality;
+    -ms-interpolation-mode: bicubic;
+    
+    /* Aceleración por GPU */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    
+    /* Prevenir compresión del navegador */
+    image-orientation: from-image;
+}
+
+.canvas-wrapper {
+    width: 100%;
+    max-width: min(90vw, 380px);
+    aspect-ratio: 9 / 16;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+#editor-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* Paneles Laterales - SUPERPOSICIÓN PARA ELIMINAR GAP */
+.cliparts-panel,
+.product-selector,
+.custom-images-panel {
+    position: fixed;
+    bottom: var(--toolbar-height);
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    background: var(--bg-glass);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-top: none;
+    padding: 20px;
+    overflow-y: auto;
+    z-index: 250;
+    display: none;
+    transition: all 0.3s ease;
+    margin-bottom: -1px; /* SUPERPOSICIÓN DE 1PX PARA ELIMINAR GAP */
+}
+
+.cliparts-panel.open,
+.product-selector.open,
+.custom-images-panel.open {
+    display: block;
+}
+
+.cliparts-header {
+    display: none;
+}
+
+/* Panel de Fuentes - Diseño especial */
+.fonts-panel {
+    position: fixed;
+    bottom: var(--toolbar-height);
+    left: 0;
+    right: 0;
+    max-height: 350px;
+    background: var(--bg-glass);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-top: none;
+    z-index: 250;
+    display: none;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    margin-bottom: -1px; /* CONSISTENCIA CON OTROS PANELES */
+}
+
+.fonts-panel.open {
+    display: flex;
+}
+
+.fonts-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 0.5px solid var(--border-light);
+}
+
+.fonts-panel-header h3 {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.close-panel-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--btn-bg);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.close-panel-btn:hover {
+    background: var(--btn-bg-hover);
+    transform: scale(1.05);
+}
+
+.close-panel-btn svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--text-primary);
+}
+
+.fonts-panel-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.add-text-action {
+    width: 100%;
+    padding: 16px;
+    background: var(--accent-color);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+}
+
+.add-text-action:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.add-text-action:active {
+    transform: scale(0.95);
+}
+
+.add-text-action svg {
+    width: 20px;
+    height: 20px;
+    stroke: white;
+}
+
+.fonts-section {
+    margin-top: 20px;
+}
+
+.fonts-section h4 {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+}
+
+.fonts-hint {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+}
+
+/* Lista de Cliparts */
+.cliparts-list,
+.custom-images-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 12px;
+}
+
+.clipart-item {
+    aspect-ratio: 1;
+    background: var(--bg-secondary);
+    border: 1.5px solid var(--border-light);
+    border-radius: 14px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px var(--shadow-sm);
+}
+
+.clipart-item:hover {
+    border-color: var(--accent-color);
+    background: var(--bg-tertiary);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px var(--shadow-md);
+}
+
+.clipart-item:active {
+    transform: scale(0.95);
+}
+
+.clipart-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Grid de Productos */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 12px;
+}
+
+.product-card {
+    aspect-ratio: 1;
+    background: transparent;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+}
+
+.product-card:active {
+    transform: scale(0.95);
+}
+
+.product-card.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 24px;
+    height: 24px;
+    background: var(--accent-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+    z-index: 10;
+}
+
+.product-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px var(--shadow-md));
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card:hover img {
+    filter: drop-shadow(0 4px 12px var(--shadow-lg));
+}
+
+.product-card.selected img {
+    filter: drop-shadow(0 4px 12px rgba(99, 102, 241, 0.3));
+}
+
+.product-card .product-name {
+    color: var(--text-primary);
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 6px;
+    letter-spacing: -0.01em;
+}
+
+/* Lista de Fuentes */
+.fonts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.font-item {
+    background: var(--bg-secondary);
+    border: 1.5px solid var(--border-light);
+    border-radius: 12px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.font-item:hover {
+    border-color: var(--accent-color);
+    background: var(--bg-tertiary);
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px var(--shadow-md);
+}
+
+.font-item:active {
+    transform: translateX(2px);
+}
+
+.font-item.selected {
+    border-color: var(--accent-color);
+    background: var(--bg-tertiary);
+}
+
+.font-item.selected::after {
+    content: '✓';
+    color: var(--accent-color);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.font-preview {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+/* Toolbar - Diseño minimalista moderno */
+.toolbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-glass);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-top: none;
+    z-index: 200;
+    padding-bottom: env(safe-area-inset-bottom);
+    transition: all 0.3s ease;
+}
+
+/* Botones Secundarios */
+.toolbar-secondary {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 20px 8px;
+    border-bottom: 0.5px solid var(--border-light);
+}
+
+.tool-btn-small {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--btn-bg);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px var(--shadow-sm);
+}
+
+.tool-btn-small:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.tool-btn-small:not(:disabled):hover {
+    background: var(--btn-bg-hover);
+    transform: scale(1.05);
+}
+
+.tool-btn-small:not(:disabled):active {
+    transform: scale(0.92);
+}
+
+.tool-btn-small svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--text-primary);
+    stroke-width: 2;
+}
+
+.tool-btn-danger svg {
+    stroke: #dc2626;
+}
+
+.tool-btn-warning svg {
+    stroke: #ea580c;
+}
+
+.tool-btn-gray {
+    background: var(--btn-bg);
+}
+
+.tool-btn-gray:hover {
+    background: var(--btn-bg-hover);
+}
+
+/* Botones Principales - Sin colores, minimalista */
+.toolbar-primary {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 20px;
+}
+
+.tool-btn-large {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    background: var(--btn-bg);
+    border: 1px solid var(--border-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px var(--shadow-sm);
+}
+
+.tool-btn-large:hover {
+    background: var(--btn-bg-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-md);
+}
+
+.tool-btn-large:active {
+    transform: scale(0.92);
+}
+
+.tool-btn-large svg {
+    width: 26px;
+    height: 26px;
+    stroke: var(--text-primary);
+    stroke-width: 2;
+}
+
+/* Ocultar texto */
+.tool-btn-large span {
+    display: none !important;
+}
+
+/* Botón de guardar con acento */
+.tool-btn-large#save-btn {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.tool-btn-large#save-btn svg {
+    stroke: #ffffff;
+}
+
+.tool-btn-large#save-btn:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+}
+
+/* Remover clases de color (mantener solo para compatibilidad) */
+.tool-btn-orange,
+.tool-btn-blue,
+.tool-btn-teal,
+.tool-btn-purple,
+.tool-btn-pink {
+    background: var(--btn-bg);
+    border: 1px solid var(--border-light);
+}
+
+.tool-btn-orange svg,
+.tool-btn-blue svg,
+.tool-btn-teal svg,
+.tool-btn-purple svg,
+.tool-btn-pink svg {
+    stroke: var(--text-primary);
+}
+
+.tool-btn-green {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.tool-btn-green svg {
+    stroke: #ffffff;
+}
+
+/* Color Picker */
+.color-picker-container {
+    position: relative;
+}
+
+.color-picker-panel {
+    position: fixed;
+    bottom: var(--toolbar-height);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-glass);
+    backdrop-filter: saturate(180%) blur(20px);
+    padding: 20px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border-light);
+    box-shadow: 0 10px 40px var(--shadow-lg);
+    z-index: 300;
+    display: none;
+    transition: all 0.3s ease;
+    margin-bottom: -1px; /* CONSISTENCIA CON PANELES */
+}
+
+.color-picker-panel.active {
+    display: block;
+}
+
+#text-color-input {
+    width: 120px;
+    height: 120px;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+}
+
+/* Scrollbar minimalista */
+.cliparts-list::-webkit-scrollbar,
+.cliparts-panel::-webkit-scrollbar,
+.custom-images-list::-webkit-scrollbar,
+.custom-images-panel::-webkit-scrollbar,
+.products-grid::-webkit-scrollbar,
+.product-selector::-webkit-scrollbar,
+.fonts-list::-webkit-scrollbar,
+.fonts-panel-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.cliparts-list::-webkit-scrollbar-thumb,
+.cliparts-panel::-webkit-scrollbar-thumb,
+.custom-images-list::-webkit-scrollbar-thumb,
+.custom-images-panel::-webkit-scrollbar-thumb,
+.products-grid::-webkit-scrollbar-thumb,
+.product-selector::-webkit-scrollbar-thumb,
+.fonts-list::-webkit-scrollbar-thumb,
+.fonts-panel-content::-webkit-scrollbar-thumb {
+    background: var(--text-tertiary);
+    border-radius: 2px;
+}
+
+.cliparts-list::-webkit-scrollbar-thumb:hover,
+.cliparts-panel::-webkit-scrollbar-thumb:hover,
+.custom-images-list::-webkit-scrollbar-thumb:hover,
+.custom-images-panel::-webkit-scrollbar-thumb:hover,
+.products-grid::-webkit-scrollbar-thumb:hover,
+.product-selector::-webkit-scrollbar-thumb:hover,
+.fonts-list::-webkit-scrollbar-thumb:hover,
+.fonts-panel-content::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* Modales estilo minimalista */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(20px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--bg-glass);
+    backdrop-filter: saturate(180%) blur(20px);
+    border: 0.5px solid var(--border-light);
+    border-radius: 24px;
+    padding: 40px 30px;
+    max-width: 450px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px var(--shadow-lg);
+    transition: all 0.3s ease;
+}
+
+.modal-content h2 {
+    color: var(--text-primary);
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+}
+
+.modal-content p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 28px;
+    line-height: 1.5;
+}
+
+#client-name-input {
+    width: 100%;
+    padding: 16px;
+    border: 1.5px solid var(--border-medium);
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 24px;
+    transition: all 0.2s ease;
+}
+
+#client-name-input::placeholder {
+    color: var(--text-tertiary);
+}
+
+#client-name-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background: var(--bg-tertiary);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-modal {
+    flex: 1;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: -0.01em;
+}
+
+.btn-cancel {
+    background: var(--btn-bg);
+    color: var(--text-primary);
+}
+
+.btn-cancel:hover {
+    background: var(--btn-bg-hover);
+}
+
+.btn-confirm,
+.btn-primary {
+    background: var(--accent-color);
+    color: white;
+}
+
+.btn-confirm:hover,
+.btn-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.btn-confirm:active,
+.btn-primary:active {
+    transform: scale(0.95);
+}
+
+.success-content {
+    padding: 50px 30px;
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--accent-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    margin: 0 auto 20px;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+}
+
+/* ============================================
+   RESPONSIVE - OPTIMIZADO PARA TODAS LAS PANTALLAS
+============================================ */
+
+/* LAPTOPS 13-14" - 1366×768, 1440×900, 1536×864 */
+@media (min-width: 1280px) and (max-width: 1600px) {
+    :root {
+        /* toolbar-secondary: 12px + 46px + 8px + 0.5px = 66.5px */
+        /* toolbar-primary: 14px + 62px + 14px = 90px */
+        /* Total: 66.5px + 90px = 156.5px → 157px */
+        --toolbar-height: 157px;
+    }
+
+    .canvas-area {
+        padding: 25px;
+    }
+
+    .canvas-wrapper {
+        max-width: min(42vw, 420px);
+        max-height: calc(100vh - 200px);
+    }
+
+    .toolbar-primary {
+        gap: 14px;
+        padding: 14px 22px;
+    }
+
+    .toolbar-secondary {
+        gap: 12px;
+        padding: 12px 22px 8px;
+    }
+
+    .tool-btn-large {
+        width: 62px;
+        height: 62px;
+        border-radius: 15px;
+    }
+
+    .tool-btn-large svg {
+        width: 26px;
+        height: 26px;
+    }
+
+    .tool-btn-small {
+        width: 46px;
+        height: 46px;
+    }
+
+    .tool-btn-small svg {
+        width: 21px;
+        height: 21px;
+    }
+
+    .cliparts-panel,
+    .custom-images-panel,
+    .product-selector {
+        max-height: 210px;
+        padding: 18px 22px;
+    }
+
+    .fonts-panel {
+        max-height: 360px;
+    }
+
+    .fonts-panel-content {
+        padding: 18px 22px;
+    }
+
+    .products-grid,
+    .cliparts-list,
+    .custom-images-list {
+        grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+        gap: 13px;
+    }
+
+    .font-item {
+        padding: 15px 18px;
+    }
+
+    .font-preview {
+        font-size: 1.05rem;
+    }
+}
+
+/* Optimización para 1366×768 específicamente */
+@media (width: 1366px) and (height: 768px) {
+    .canvas-wrapper {
+        max-width: min(40vw, 400px);
+    }
+
+    .toolbar-primary {
+        padding: 13px 20px;
+    }
+
+    .tool-btn-large {
+        width: 60px;
+        height: 60px;
+    }
+    
+    :root {
+        /* Recalcular: 12px + 44px + 8px + 0.5px = 64.5px + 13px + 60px + 13px = 150.5px → 151px */
+        --toolbar-height: 151px;
+    }
+}
+
+/* Laptops grandes (15-16") - 1920x1080 o similar */
+@media (min-width: 1600px) {
+    .canvas-wrapper {
+        max-width: min(35vw, 450px);
+    }
+
+    .toolbar-primary {
+        gap: 16px;
+    }
+
+    .tool-btn-large {
+        width: 68px;
+        height: 68px;
+    }
+
+    .tool-btn-large svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .tool-btn-small {
+        width: 48px;
+        height: 48px;
+    }
+
+    .cliparts-panel,
+    .custom-images-panel,
+    .product-selector,
+    .fonts-panel {
+        max-width: 1200px;
+        margin: 0 auto;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+    }
+    
+    :root {
+        /* 12px + 48px + 8px + 0.5px = 68.5px + 12px + 68px + 12px = 160.5px → 161px */
+        --toolbar-height: 161px;
+    }
+}
+
+/* Tablets - iPad y similares */
+@media (min-width: 768px) and (max-width: 1279px) {
+    :root {
+        /* toolbar-secondary: 12px + 44px + 8px + 0.5px = 64.5px */
+        /* toolbar-primary: 12px + 58px + 12px = 82px */
+        /* Total: 64.5px + 82px = 146.5px → 147px */
+        --toolbar-height: 147px;
+    }
+
+    .canvas-wrapper {
+        max-width: min(55vw, 360px);
+    }
+
+    .toolbar-primary {
+        gap: 12px;
+        padding: 12px 20px;
+    }
+    
+    .toolbar-secondary {
+        gap: 12px;
+        padding: 12px 20px 8px;
+    }
+
+    .tool-btn-large {
+        width: 58px;
+        height: 58px;
+    }
+}
+
+/* Tablets pequeñas */
+@media (max-width: 768px) {
+    :root {
+        /* toolbar-secondary: 12px + 44px + 8px + 0.5px = 64.5px */
+        /* toolbar-primary: 12px + 56px + 12px = 80px */
+        /* Total: 64.5px + 80px = 144.5px → 145px */
+        --toolbar-height: 145px;
+    }
+
+    .canvas-wrapper {
+        max-width: min(85vw, 340px);
+    }
+
+    .toolbar-primary {
+        gap: 10px;
+        padding: 12px 20px;
+    }
+    
+    .toolbar-secondary {
+        gap: 12px;
+        padding: 12px 20px 8px;
+    }
+
+    .tool-btn-large {
+        width: 56px;
+        height: 56px;
+    }
+}
+
+/* Móviles */
+@media (max-width: 480px) {
+    :root {
+        /* toolbar-secondary: 10px + 40px + 6px + 0.5px = 56.5px */
+        /* toolbar-primary: 10px + 52px + 10px = 72px */
+        /* Total: 56.5px + 72px = 128.5px → 129px */
+        --toolbar-height: 129px;
+    }
+
+    .canvas-area {
+        padding: 15px;
+    }
+
+    .canvas-wrapper {
+        max-width: min(82vw, 300px);
+    }
+
+    .toolbar-primary {
+        gap: 8px;
+        padding: 10px 15px;
+    }
+
+    .toolbar-secondary {
+        gap: 10px;
+        padding: 10px 15px 6px;
+    }
+
+    .tool-btn-small {
+        width: 40px;
+        height: 40px;
+    }
+
+    .tool-btn-small svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .tool-btn-large {
+        width: 52px;
+        height: 52px;
+    }
+
+    .tool-btn-large svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .products-grid,
+    .cliparts-list,
+    .custom-images-list {
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        gap: 10px;
+    }
+
+    .font-item {
+        padding: 14px 16px;
+    }
+
+    .font-preview {
+        font-size: 1rem;
+    }
+
+    .cliparts-panel,
+    .custom-images-panel,
+    .product-selector {
+        padding: 15px;
+    }
+
+    .fonts-panel-content {
+        padding: 15px;
+    }
+}
+
+/* Pantallas bajas */
+@media (max-height: 700px) {
+    :root {
+        /* toolbar-secondary: 12px + 44px + 8px + 0.5px = 64.5px */
+        /* toolbar-primary: 12px + 56px + 12px = 80px */
+        /* Total: 64.5px + 80px = 144.5px → 145px */
+        --toolbar-height: 145px;
+    }
+
+    .canvas-area {
+        padding: 15px;
+    }
+
+    .canvas-wrapper {
+        max-width: min(75vw, 280px);
+    }
+
+    .cliparts-panel,
+    .custom-images-panel,
+    .product-selector {
+        max-height: 180px;
+    }
+
+    .fonts-panel {
+        max-height: 280px;
+    }
+    
+    .toolbar-primary {
+        padding: 12px 20px;
+    }
+    
+    .toolbar-secondary {
+        padding: 12px 20px 8px;
+    }
+}
+
+@media (max-height: 600px) {
+    :root {
+        /* toolbar-secondary: 8px + 44px + 6px + 0.5px = 58.5px */
+        /* toolbar-primary: 8px + 56px + 8px = 72px */
+        /* Total: 58.5px + 72px = 130.5px → 131px */
+        --toolbar-height: 131px;
+    }
+
+    .canvas-area {
+        padding: 10px;
+    }
+
+    .canvas-wrapper {
+        max-width: min(70vw, 260px);
+    }
+
+    .cliparts-panel,
+    .custom-images-panel,
+    .product-selector {
+        max-height: 160px;
+    }
+
+    .fonts-panel {
+        max-height: 240px;
+    }
+
+    .toolbar-primary {
+        padding: 8px 15px;
+    }
+
+    .toolbar-secondary {
+        padding: 8px 15px 6px;
+    }
+}
+
+/* Landscape (horizontal) */
+@media (orientation: landscape) and (max-height: 600px) {
+    :root {
+        /* toolbar-secondary: 8px + 38px + 6px + 0.5px = 52.5px */
+        /* toolbar-primary: 8px + 48px + 8px = 64px */
+        /* Total: 52.5px + 64px = 116.5px → 117px */
+        --toolbar-height: 117px;
+    }
+
+    .canvas-area {
+        top: 0;
+        padding: 10px;
+    }
+
+    .canvas-wrapper {
+        max-width: min(45vw, 220px);
+    }
+
+    .tool-btn-large {
+        width: 48px;
+        height: 48px;
+    }
+
+    .tool-btn-large svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .tool-btn-small {
+        width: 38px;
+        height: 38px;
+    }
+
+    .toolbar-primary {
+        padding: 8px 15px;
+    }
+
+    .toolbar-secondary {
+        padding: 8px 15px 6px;
+    }
+
+    .cliparts-panel,
+    .custom-images-panel,
+    .product-selector {
+        max-height: 140px;
+    }
+
+    .fonts-panel {
+        max-height: 200px;
+    }
+}
+
+/* Móviles muy pequeños */
+@media (max-width: 360px) {
+    :root {
+        /* toolbar-secondary: 8px + 36px + 6px + 0.5px = 50.5px */
+        /* toolbar-primary: 8px + 48px + 8px = 64px */
+        /* Total: 50.5px + 64px = 114.5px → 115px */
+        --toolbar-height: 115px;
+    }
+
+    .canvas-wrapper {
+        max-width: min(80vw, 260px);
+    }
+
+    .tool-btn-large {
+        width: 48px;
+        height: 48px;
+    }
+
+    .tool-btn-small {
+        width: 36px;
+        height: 36px;
+    }
+
+    .toolbar-primary {
+        gap: 6px;
+        padding: 8px 10px;
+    }
+
+    .toolbar-secondary {
+        gap: 8px;
+        padding: 8px 10px 6px;
+    }
+}
+
+/* Pantallas muy altas (tablets en vertical) */
+@media (min-height: 900px) {
+    .canvas-wrapper {
+        max-width: min(85vw, 420px);
+    }
+}
+
+/* Laptops 14" específicos - 1920x1200 */
+@media (min-width: 1920px) and (min-height: 1080px) {
+    :root {
+        /* toolbar-secondary: 14px + 50px + 8px + 0.5px = 72.5px */
+        /* toolbar-primary: 16px + 72px + 16px = 104px */
+        /* Total: 72.5px + 104px = 176.5px → 177px */
+        --toolbar-height: 177px;
+    }
+
+    .canvas-wrapper {
+        max-width: min(30vw, 500px);
+    }
+
+    .canvas-area {
+        padding: 30px;
+    }
+
+    .toolbar-primary {
+        gap: 18px;
+        padding: 16px 24px;
+    }
+    
+    .toolbar-secondary {
+        gap: 14px;
+        padding: 14px 24px 8px;
+    }
+
+    .tool-btn-large {
+        width: 72px;
+        height: 72px;
+    }
+
+    .tool-btn-large svg {
+        width: 30px;
+        height: 30px;
+    }
+
+    .tool-btn-small {
+        width: 50px;
+        height: 50px;
+    }
+
+    .tool-btn-small svg {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+/* 4K y pantallas ultra grandes */
+@media (min-width: 2560px) {
+    :root {
+        /* toolbar-secondary: 16px + 54px + 8px + 0.5px = 78.5px */
+        /* toolbar-primary: 18px + 80px + 18px = 116px */
+        /* Total: 78.5px + 116px = 194.5px → 195px */
+        --toolbar-height: 195px;
+    }
+
+    .canvas-wrapper {
+        max-width: min(25vw, 600px);
+    }
+
+    .toolbar-primary {
+        gap: 20px;
+        padding: 18px 30px;
+    }
+    
+    .toolbar-secondary {
+        gap: 16px;
+        padding: 16px 30px 8px;
+    }
+
+    .tool-btn-large {
+        width: 80px;
+        height: 80px;
+    }
+
+    .tool-btn-large svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    .tool-btn-small {
+        width: 54px;
+        height: 54px;
+    }
+
+    .tool-btn-small svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .cliparts-panel,
+    .custom-images-panel,
+    .product-selector {
+        max-height: 250px;
+    }
+
+    .fonts-panel {
+        max-height: 400px;
+    }
+
+    .products-grid,
+    .cliparts-list,
+    .custom-images-list {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 16px;
+    }
+}
