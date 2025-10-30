@@ -1,0 +1,485 @@
+/* ============================================
+   PERSONALIZADOR DE EVENTOS - CRK2 V01
+   Estilos Principales
+============================================ */
+
+/* Reset y Variables */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-primary: #ec4899;
+    --color-secondary: #8b5cf6;
+    --color-success: #10b981;
+    --color-danger: #ef4444;
+    --color-warning: #f59e0b;
+    --color-info: #3b82f6;
+    --color-dark: #1e293b;
+    --color-light: #f8fafc;
+    
+    --gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-pink: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --gradient-blue: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --gradient-green: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.25);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ============================================
+   PANTALLAS
+============================================ */
+
+.screen {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* ============================================
+   PANTALLA DE CONFIGURACIÓN
+============================================ */
+
+#config-screen {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.config-container {
+    background: white;
+    border-radius: 2rem;
+    padding: 3rem 2rem;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: var(--shadow-xl);
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.config-title {
+    font-size: 2rem;
+    font-weight: 800;
+    text-align: center;
+    color: var(--color-dark);
+    margin-bottom: 2rem;
+    background: var(--gradient-purple);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.upload-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.upload-card {
+    background: var(--color-light);
+    border: 3px dashed #cbd5e1;
+    border-radius: 1.5rem;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.upload-card:hover {
+    border-color: var(--color-primary);
+    background: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    gap: 1rem;
+}
+
+.upload-icon {
+    width: 3rem;
+    height: 3rem;
+    color: #94a3b8;
+    stroke-width: 2;
+}
+
+.upload-label span {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-dark);
+}
+
+.preview-container {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview-container img {
+    max-height: 120px;
+    max-width: 100%;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.preview-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.preview-grid img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.preview-grid .more-badge {
+    width: 60px;
+    height: 60px;
+    background: var(--color-secondary);
+    color: white;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 1.25rem;
+    border: none;
+    border-radius: 1.5rem;
+    background: var(--gradient-pink);
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-primary:disabled {
+    background: #cbd5e1;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* ============================================
+   PANTALLA DE EDITOR
+============================================ */
+
+#editor-screen {
+    background: linear-gradient(135deg, #0f172a 0%, #581c87 50%, #0f172a 100%);
+    flex-direction: column;
+}
+
+/* Panel Lateral de Cliparts */
+.cliparts-sidebar {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 2rem;
+    padding: 1rem;
+    max-height: 60vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-xl);
+    z-index: 100;
+}
+
+.cliparts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.clipart-item {
+    width: 70px;
+    height: 70px;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: var(--color-light);
+    border: 2px solid transparent;
+}
+
+.clipart-item:hover {
+    transform: scale(1.15);
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 16px rgba(236, 72, 153, 0.4);
+}
+
+.clipart-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Área del Canvas */
+.canvas-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    overflow: hidden;
+}
+
+.canvas-wrapper {
+    position: relative;
+    background: white;
+    border-radius: 2rem;
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+    /* Aspecto 9:16 */
+    width: 90vmin;
+    max-width: 540px;
+    aspect-ratio: 9/16;
+}
+
+#main-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* ============================================
+   BARRA DE HERRAMIENTAS
+============================================ */
+
+.toolbar {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    padding: 1.5rem;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.toolbar-top {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.tool-btn {
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 1.25rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.tool-btn svg {
+    width: 28px;
+    height: 28px;
+    stroke-width: 2.5;
+    color: white;
+}
+
+.tool-btn:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: var(--shadow-md);
+}
+
+.tool-btn:active {
+    transform: translateY(0) scale(1);
+}
+
+.tool-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.tool-btn-purple {
+    background: var(--gradient-purple);
+}
+
+.tool-btn-red {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.tool-btn-orange {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.toolbar-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.btn-tool {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1.25rem 2rem;
+    border: none;
+    border-radius: 1.5rem;
+    color: white;
+    font-size: 1.125rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+    flex: 1;
+    max-width: 300px;
+}
+
+.btn-tool svg {
+    width: 28px;
+    height: 28px;
+    stroke-width: 2.5;
+}
+
+.btn-tool:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-tool:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.btn-blue {
+    background: var(--gradient-blue);
+}
+
+.btn-pink {
+    background: var(--gradient-pink);
+}
+
+.btn-green {
+    background: var(--gradient-green);
+}
+
+/* Selector de Color */
+.color-picker-wrapper {
+    position: relative;
+}
+
+.color-panel {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 1rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-xl);
+    display: none;
+}
+
+.color-panel.active {
+    display: block;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.color-panel input[type="color"] {
+    width: 100px;
+    height: 100px;
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+/* ============================================
+   SCROLLBAR PERSONALIZADO
+============================================ */
+
+.cliparts-sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.cliparts-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.cliparts-sidebar::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 10px;
+}
+
+.cliparts-sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-secondary);
+}
+
+/* ============================================
+   UTILIDADES
+============================================ */
+
+.hidden {
+    display: none !important;
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}

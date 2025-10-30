@@ -1,0 +1,136 @@
+/* ============================================
+   RESPONSIVE - ADAPTACIÓN A DIFERENTES PANTALLAS
+============================================ */
+
+/* Tablets en Vertical (iPad) */
+@media (max-width: 1024px) {
+    .config-container {
+        max-width: 90%;
+    }
+    
+    .canvas-wrapper {
+        width: 80vmin;
+    }
+    
+    .toolbar-main {
+        flex-wrap: wrap;
+    }
+    
+    .btn-tool span {
+        display: none;
+    }
+    
+    .btn-tool {
+        padding: 1.25rem;
+        min-width: 70px;
+        flex: 0;
+    }
+}
+
+/* Tablets en Horizontal */
+@media (max-width: 1024px) and (orientation: landscape) {
+    .cliparts-sidebar {
+        max-height: 50vh;
+    }
+    
+    .canvas-wrapper {
+        max-height: 70vh;
+    }
+}
+
+/* Pantallas Pequeñas */
+@media (max-width: 768px) {
+    .config-container {
+        padding: 2rem 1.5rem;
+    }
+    
+    .config-title {
+        font-size: 1.5rem;
+    }
+    
+    .upload-card {
+        padding: 1.5rem;
+    }
+    
+    .cliparts-sidebar {
+        left: 0.5rem;
+        padding: 0.75rem;
+        max-height: 50vh;
+    }
+    
+    .clipart-item {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .toolbar {
+        padding: 1rem;
+    }
+    
+    .toolbar-top {
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .tool-btn {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .tool-btn svg {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .toolbar-main {
+        gap: 0.5rem;
+    }
+    
+    .btn-tool {
+        font-size: 1rem;
+        padding: 1rem;
+    }
+    
+    .btn-tool svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* Modo Paisaje para Móviles */
+@media (max-height: 500px) and (orientation: landscape) {
+    .config-container {
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    .toolbar {
+        padding: 0.75rem;
+    }
+    
+    .toolbar-top {
+        margin-bottom: 0.75rem;
+    }
+}
+
+/* iPad Pro y Pantallas Grandes */
+@media (min-width: 1024px) {
+    .canvas-wrapper {
+        max-width: 600px;
+    }
+}
+
+/* Touch Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .tool-btn,
+    .btn-tool,
+    .clipart-item,
+    .upload-card {
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .tool-btn:active,
+    .btn-tool:active {
+        transform: scale(0.95);
+    }
+}

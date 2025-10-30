@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Configuración del Evento - CRK2 Admin</title>
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="admin-body">
+    
+    <!-- Header Admin -->
+    <header class="admin-header">
+        <h1>Configuración del Evento</h1>
+        <p class="admin-subtitle">Prepara la experiencia para los asistentes</p>
+    </header>
+
+    <!-- Contenedor Principal -->
+    <main class="admin-container">
+        
+        <!-- Sección 1: Fondo de Bienvenida -->
+        <section class="admin-section">
+            <div class="section-header">
+                <h2>1. Fondo de Bienvenida</h2>
+                <p>Imagen que verán los asistentes en la pantalla inicial</p>
+            </div>
+            
+            <div class="upload-zone" id="bg-upload-zone">
+                <input type="file" id="background-input" accept="image/*" hidden>
+                <label for="background-input" class="upload-label">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <path d="M21 15l-5-5L5 21"/>
+                    </svg>
+                    <span id="bg-status">Cargar Fondo de Bienvenida</span>
+                    <small>Recomendado: 1080x1920px (9:16)</small>
+                </label>
+                <div id="bg-preview" class="preview-box"></div>
+            </div>
+        </section>
+
+        <!-- Sección 2: Logo del Evento -->
+        <section class="admin-section">
+            <div class="section-header">
+                <h2>2. Flyer del Evento</h2>
+                <p>Aparecerá en la pantalla del editor</p>
+            </div>
+            
+            <div class="upload-zone" id="logo-upload-zone">
+                <input type="file" id="logo-input" accept="image/*" hidden>
+                <label for="logo-input" class="upload-label">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <span id="logo-status">Cargar Flyer</span>
+                    <small>Recomendado: 1080x1920px (9:16)</small>
+                </label>
+                <div id="logo-preview" class="preview-box"></div>
+            </div>
+        </section>
+
+        <!-- Sección 3: Productos -->
+        <section class="admin-section">
+            <div class="section-header">
+                <h2>3. Productos a Personalizar</h2>
+                <p>Imágenes base que los asistentes personalizarán</p>
+            </div>
+            
+            <div class="upload-zone">
+                <input type="file" id="products-input" accept="image/*" multiple hidden>
+                <label for="products-input" class="upload-label">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                    </svg>
+                    <span>Agregar Producto(s)</span>
+                    <small>Puedes seleccionar varios a la vez</small>
+                </label>
+            </div>
+            
+            <div id="products-list" class="items-grid"></div>
+        </section>
+        <!-- Sección 4: Imágenes de Personalización -->
+<section class="admin-section">
+    <div class="section-header">
+        <h2>4. Imágenes de Personalización</h2>
+        <p>Imágenes que los asistentes podrán aplicar sobre los productos</p>
+    </div>
+    
+    <div class="upload-zone">
+        <input type="file" id="custom-images-input" accept="image/*" multiple hidden>
+        <label for="custom-images-input" class="upload-label">
+            <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <path d="M21 15l-5-5L5 21"/>
+            </svg>
+            <span>Agregar Imágenes</span>
+            <small>Diseños, logos, texturas que se aplicarán a los productos</small>
+        </label>
+    </div>
+    
+    <div id="custom-images-list" class="items-grid"></div>
+</section>
+
+        <!-- Sección 4: Cliparts -->
+        <section class="admin-section">
+            <div class="section-header">
+                <h2>5. Cliparts / Stickers</h2>
+                <p>Elementos decorativos disponibles para personalizar</p>
+            </div>
+            
+            <div class="upload-zone">
+                <input type="file" id="cliparts-input" accept="image/*" multiple hidden>
+                <label for="cliparts-input" class="upload-label">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+                        <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+                        <path d="M2 2l7.586 7.586"/>
+                        <circle cx="11" cy="11" r="2"/>
+                    </svg>
+                    <span>Agregar Cliparts</span>
+                    <small>Puedes seleccionar múltiples archivos</small>
+                </label>
+            </div>
+            
+            <div id="cliparts-list" class="items-grid"></div>
+        </section>
+
+        <!-- Botones de Acción -->
+        <div class="admin-actions">
+            <button id="preview-btn" class="btn-admin btn-secondary" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                </svg>
+                Vista Previa
+            </button>
+            
+            <button id="save-config-btn" class="btn-admin btn-primary" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                    <path d="M17 21v-8H7v8M7 3v5h8"/>
+                </svg>
+                Guardar y Activar Evento
+            </button>
+            
+            <button id="reset-btn" class="btn-admin btn-danger">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                </svg>
+                Resetear Todo
+            </button>
+        </div>
+
+        <!-- Estado de Configuración -->
+        <div id="config-status" class="config-status"></div>
+
+    </main>
+
+    <!-- Modal de Vista Previa -->
+    <div id="preview-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" id="close-preview">×</button>
+            <h2>Vista Previa - Pantalla Inicial</h2>
+            <div class="preview-screen" id="preview-screen">
+                <!-- Se carga dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    
+    <script src="js/admin.js"></script>
+</body>
+</html>
