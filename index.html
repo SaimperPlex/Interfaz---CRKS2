@@ -19,7 +19,7 @@
     <title>Personaliza tu Producto - CRK2</title>
     
     <style>
-                * {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -47,6 +47,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            cursor: pointer;
         }
 
         /* Overlay oscuro para mejor legibilidad */
@@ -75,69 +76,6 @@
             animation: fadeInDown 1s ease-out;
         }
 
-        /* Botón TAP TO START - Tamaño más razonable */
-        .tap-button {
-            position: relative;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 1.5rem 2.5rem;
-            border-radius: 1.25rem;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            animation: subtlePulse 3s ease-in-out infinite, fadeInUp 1s ease-out;
-            border: 3px solid rgba(255, 255, 255, 0.4);
-        }
-
-        /* Adaptación al color del fondo */
-        .tap-button::after {
-            content: '';
-            position: absolute;
-            inset: -3px;
-            border-radius: inherit;
-            background: currentColor;
-            opacity: 0.15;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .tap-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-            background: rgba(255, 255, 255, 0.98);
-        }
-
-        .tap-button:active {
-            transform: scale(0.98);
-        }
-
-        .tap-button-text {
-            font-size: 1.75rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 1px;
-            text-align: center;
-            line-height: 1.2;
-            position: relative;
-        }
-
-        /* Efecto de brillo adaptativo */
-        .tap-button-text::before {
-            content: attr(data-text);
-            position: absolute;
-            inset: 0;
-            background: currentColor;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            opacity: 0.1;
-            filter: blur(8px);
-        }
-
         /* Instrucción opcional */
         .instruction-text {
             position: absolute;
@@ -153,6 +91,7 @@
             animation: fadeIn 1.5s ease-out;
             opacity: 0.95;
             max-width: 90%;
+            pointer-events: none;
         }
 
         /* Pantalla de error (si no está configurado) */
@@ -220,16 +159,7 @@
             box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
         }
 
-        /* Animaciones - Pulse más sutil */
-        @keyframes subtlePulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.02);
-            }
-        }
-
+        /* Animaciones */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -250,27 +180,22 @@
             }
         }
 
-        @keyframes fadeInUp {
+        /* Efecto de transición al hacer click */
+        .transition-out {
+            animation: fadeOut 0.4s ease-out forwards;
+        }
+
+        @keyframes fadeOut {
             from {
-                opacity: 0;
-                transform: translateY(30px);
+                opacity: 1;
             }
             to {
-                opacity: 1;
-                transform: translateY(0);
+                opacity: 0;
             }
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .tap-button {
-                padding: 1.25rem 2rem;
-            }
-
-            .tap-button-text {
-                font-size: 1.5rem;
-            }
-
             .event-logo {
                 max-width: 140px;
                 max-height: 70px;
@@ -284,14 +209,6 @@
         }
 
         @media (max-height: 700px) {
-            .tap-button {
-                padding: 1rem 1.75rem;
-            }
-
-            .tap-button-text {
-                font-size: 1.5rem;
-            }
-
             .event-logo {
                 top: 1.5rem;
                 max-width: 130px;
@@ -304,14 +221,6 @@
                 max-width: 100px;
                 max-height: 50px;
                 top: 1rem;
-            }
-
-            .tap-button {
-                padding: 0.875rem 1.5rem;
-            }
-
-            .tap-button-text {
-                font-size: 1.25rem;
             }
 
             .instruction-text {
@@ -350,8 +259,8 @@
             background: #f0f0f0;
         }
         #event-logo {
-  display: none !important;
-}
+            display: none !important;
+        }
 
     </style>
 </head>
@@ -361,11 +270,6 @@
     <div id="welcome-screen">
         <img id="event-logo" class="event-logo" style="display: none;" alt="Logo del evento">
         
-        <div class="tap-button" id="tap-button">
-            <div class="tap-button-text">TAP TO START</div>
-        </div>
-        
-        <div class="instruction-text">Toca para comenzar a personalizar</div>
     </div>
 
     <!-- Pantalla de Error (si no está configurado) -->
@@ -391,7 +295,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             const welcomeScreen = document.getElementById('welcome-screen');
             const errorScreen = document.getElementById('error-screen');
-            const tapButton = document.getElementById('tap-button');
             const eventLogo = document.getElementById('event-logo');
 
             console.log('🔍 === INICIANDO VERIFICACIÓN EN INDEX.HTML ===');
@@ -461,22 +364,17 @@
                 console.log('✅ Logo establecido');
             }
 
-            // Manejar click en el botón
-            tapButton.addEventListener('click', () => {
-                console.log('👆 Click en TAP TO START');
-                tapButton.style.transform = 'scale(0)';
-                tapButton.style.opacity = '0';
+            // Manejar click en toda la pantalla
+            welcomeScreen.addEventListener('click', () => {
+                console.log('👆 Click en la pantalla de bienvenida');
                 
+                // Aplicar efecto de transición
+                welcomeScreen.classList.add('transition-out');
+                
+                // Redirigir después de la animación
                 setTimeout(() => {
                     window.location.href = 'editor.html';
                 }, 400);
-            });
-
-            // También permitir tocar en cualquier parte de la pantalla
-            welcomeScreen.addEventListener('click', (e) => {
-                if (e.target !== tapButton && !tapButton.contains(e.target)) {
-                    tapButton.click();
-                }
             });
 
             console.log('🎉 === INDEX.HTML INICIALIZADO CORRECTAMENTE ===');
