@@ -84,30 +84,31 @@
             
             <div id="products-list" class="items-grid"></div>
         </section>
-        <!-- Sección 4: Imágenes de Personalización -->
-<section class="admin-section">
-    <div class="section-header">
-        <h2>4. Imágenes de Personalización</h2>
-        <p>Imágenes que los asistentes podrán aplicar sobre los productos</p>
-    </div>
-    
-    <div class="upload-zone">
-        <input type="file" id="custom-images-input" accept="image/*" multiple hidden>
-        <label for="custom-images-input" class="upload-label">
-            <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                <circle cx="8.5" cy="8.5" r="1.5"/>
-                <path d="M21 15l-5-5L5 21"/>
-            </svg>
-            <span>Agregar Imágenes</span>
-            <small>Diseños, logos, texturas que se aplicarán a los productos</small>
-        </label>
-    </div>
-    
-    <div id="custom-images-list" class="items-grid"></div>
-</section>
 
-        <!-- Sección 4: Cliparts -->
+        <!-- Sección 4: Imágenes de Personalización -->
+        <section class="admin-section">
+            <div class="section-header">
+                <h2>4. Imágenes de Personalización</h2>
+                <p>Imágenes que los asistentes podrán aplicar sobre los productos</p>
+            </div>
+            
+            <div class="upload-zone">
+                <input type="file" id="custom-images-input" accept="image/*" multiple hidden>
+                <label for="custom-images-input" class="upload-label">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <path d="M21 15l-5-5L5 21"/>
+                    </svg>
+                    <span>Agregar Imágenes</span>
+                    <small>Diseños, logos, texturas que se aplicarán a los productos</small>
+                </label>
+            </div>
+            
+            <div id="custom-images-list" class="items-grid"></div>
+        </section>
+
+        <!-- Sección 5: Cliparts -->
         <section class="admin-section">
             <div class="section-header">
                 <h2>5. Cliparts / Stickers</h2>
@@ -129,6 +130,45 @@
             </div>
             
             <div id="cliparts-list" class="items-grid"></div>
+        </section>
+
+        <!-- ✅ NUEVA SECCIÓN 6: PALETA DE COLORES -->
+        <section class="admin-section">
+            <div class="section-header">
+                <h2>6. Paleta de Colores</h2>
+                <p>Colores disponibles para los textos (mínimo 3, máximo 10)</p>
+            </div>
+            
+            <div class="colors-config">
+                <div class="color-inputs" id="color-inputs">
+                    <!-- Se generan dinámicamente -->
+                </div>
+                <button id="add-color-btn" class="btn-admin btn-secondary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="16"/>
+                        <line x1="8" y1="12" x2="16" y2="12"/>
+                    </svg>
+                    Agregar Color
+                </button>
+            </div>
+        </section>
+
+        <!-- ✅ NUEVA SECCIÓN 7: FUENTES -->
+        <section class="admin-section">
+            <div class="section-header">
+                <h2>7. Fuentes Tipográficas</h2>
+                <p>Selecciona las fuentes disponibles (mínimo 3, máximo 15)</p>
+            </div>
+            
+            <div class="fonts-config">
+                <div id="available-fonts" class="fonts-selector">
+                    <!-- Se generan dinámicamente todas las fuentes disponibles -->
+                </div>
+                <div class="selected-fonts-counter">
+                    <span id="fonts-counter">0 fuentes seleccionadas</span>
+                </div>
+            </div>
         </section>
 
         <!-- Botones de Acción -->
@@ -174,7 +214,6 @@
     </div>
 
     <!-- Scripts -->
-    
     <script src="js/admin.js"></script>
 </body>
 </html>
